@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
 const connectDatabase = require('./config/connectDatabase');
-dotenv.config({path: path.join(__dirname, 'config', 'config.env')})
+dotenv.config();
 
 const products = require('./routes/product');
 const orders = require('./routes/order');
@@ -23,6 +23,8 @@ if (process.env.NODE_ENV == 'production') {
     });
 }
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server listening to Port ${process.env.PORT} in ${process.env.NODE_ENV}`)
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`Server listening on Port ${PORT}`);
 });
