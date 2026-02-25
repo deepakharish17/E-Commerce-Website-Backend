@@ -1,30 +1,26 @@
 const express = require('express');
 const app = express();
-const dotenv = require('dotenv');
-const path = require('path');
 const cors = require('cors');
 const connectDatabase = require('./config/connectDatabase');
-dotenv.config();
+require('dotenv').config();
 
 const products = require('./routes/product');
-const orders = require('./routes/order');
 
 connectDatabase();
 
-app.use(express.json());
 app.use(cors());
-app.use('/api/v1/',products);
-app.use('/api/v1/',orders);
+app.use(express.json());
 
-if (process.env.NODE_ENV == 'production') {
-    app.use(express.static(path.join(__dirname, '..', 'frontend',  'build')));
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, '..', 'frontend', 'build', 'index.html'))
-    });
-}
+// Mount routes correctly
+app.use('/api/v1', products);
 
-const PORT = process.env.PORT || 5000;
+// Test route
+app.get('/', (req, res) => {
+    res.send("API is running...");
+});
+
+const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, () => {
-    console.log(`Server listening on Port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
